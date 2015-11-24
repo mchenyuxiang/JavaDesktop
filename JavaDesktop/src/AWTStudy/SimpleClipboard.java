@@ -74,5 +74,6 @@ public class SimpleClipboard {
 	}
 	public static void main(String[] args) {
 		new SimpleClipboard().init();
+		
 	}
 }
