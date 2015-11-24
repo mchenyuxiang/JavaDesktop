@@ -5,6 +5,8 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import util.FrameUtil;
+
 import java.util.*;
 import java.io.*;
 import java.sql.*;
@@ -21,9 +23,22 @@ public class LoginFrame {
 	private JTextField userField = new JTextField(20);
 	private JTextField passField = new JTextField(20);
 	private JButton loginButton = new JButton("登录");
+	// 定义一个单选按钮，初始处于选中状态
+	private JRadioButton admin = new JRadioButton("管理员", true);
+	private JRadioButton sale = new JRadioButton("销售", false);
+	private JRadioButton supplier = new JRadioButton("经销商", false);
+	private String saveValue = null;
 
 	private JFrame jf1 = new JFrame("登录");
-	
+
+	private ButtonGroup buttonGroup = new ButtonGroup();
+
+	private RadioButtonListener radioButtonListener;
+
+	private IsLoginIn isLoginIn = new IsLoginIn();
+
+	private JPanel jPanel = new JPanel();
+
 	public void init() throws Exception {
 		Properties connProp = new Properties();
 		connProp.load(new FileInputStream(PROP_FILE));
@@ -33,64 +48,93 @@ public class LoginFrame {
 		pass = connProp.getProperty("pass");
 		// 加载驱动
 		Class.forName(driver);
-		// 为登录按钮添加事件监听器
-		loginButton.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		// 将角色单击按钮
+		buttonGroup.add(admin);
+		buttonGroup.add(sale);
+		buttonGroup.add(supplier);
+		jPanel.add(admin);
+		jPanel.add(sale);
+		jPanel.add(supplier);
+		Box vertical = Box.createVerticalBox();
+		vertical.add(userField);
+		vertical.add(passField);
+		vertical.add(jPanel);
+		vertical.add(loginButton);
 
-				// 登录成功则显示“登录成功”
-				if (validate(userField.getText(), passField.getText())) {
-					JOptionPane.showMessageDialog(jf, "登录成功");
-					jf1.pack();
-					jf1.setVisible(true);
-				}
-				// 否则显示“登录失败”
-				else {
-					JOptionPane.showMessageDialog(jf, "登录失败");
-				}
-
-			}
-		});
-		jf.add(userField, BorderLayout.NORTH);
-		jf.add(passField);
-		jf.add(loginButton, BorderLayout.SOUTH);
+		jf.add(vertical);
 		jf.pack();
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jf.setVisible(true);
+		// FrameUtil.initFrame(jf, 300, 150);
+
+		// 为登录按钮添加事件监听器
+		radioButtonListener = new RadioButtonListener();
+		admin.addActionListener(radioButtonListener);
+		sale.addActionListener(radioButtonListener);
+		supplier.addActionListener(radioButtonListener);
+		System.out.println(radioButtonListener.saveValueTemp);
+		saveValue = radioButtonListener.saveValueTemp;
+		loginButton.addActionListener(isLoginIn);
 	}
 
-	// private boolean validate(String userName, String userPass)
-	// {
-	// // 执行查询的SQL语句
-	// String sql = "select * from jdbc_test "
-	// + "where jdbc_name='" + userName
-	// + "' and jdbc_desc='" + userPass + "'";
-	// System.out.println(sql);
-	// try(
-	// Connection conn = DriverManager.getConnection(url , user ,pass);
-	// Statement stmt = conn.createStatement();
-	// ResultSet rs = stmt.executeQuery(sql))
-	// {
-	// // 如果查询的ResultSet里有超过一条的记录，则登录成功
-	// if (rs.next())
-	// {
-	// return true;
-	// }
-	// }
-	// catch(Exception e)
-	// {
-	// e.printStackTrace();
-	// }
-	// return false;
-	// }
+	// 判断选择哪个角色登录
+	public class RadioButtonListener implements ActionListener {
+		String saveValueTemp = null;
 
-	private boolean validate(String userName, String userPass) {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			JRadioButton temp = (JRadioButton) arg0.getSource();
+			if (temp.isSelected()) {
+				saveValueTemp = temp.getText();
+				// System.out.println(temp.getText());
+//				System.out.println(saveValueTemp);
+			}
+
+		}
+
+	}
+
+	// 判断是否能正常登录
+	public class IsLoginIn implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			System.out.println(saveValue);
+			int flag = 0;
+			if (saveValue.equals("管理员")) {
+				flag = 1;
+			} else if (saveValue.equals("销售")) {
+				flag = 2;
+			} else {
+				flag = 3;
+			}
+			// 登录成功则显示“登录成功”
+			if (validate(userField.getText(), passField.getText(), flag)) {
+				JOptionPane.showMessageDialog(jf, saveValue + "登录成功");
+				// 关闭窗口
+				jf.dispose();
+				jf1.pack();
+				jf1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				jf1.setVisible(true);
+			}
+			// 否则显示“登录失败”
+			else {
+				JOptionPane.showMessageDialog(jf, "登录失败");
+			}
+
+		}
+
+	}
+
+	private boolean validate(String userName, String userPass, int flag) {
 		try (Connection conn = DriverManager.getConnection(url, user, pass);
 				PreparedStatement pstmt = conn
-						.prepareStatement("select * from student_table where student_name=? and java_teacher=?")) {
+						.prepareStatement("select * from tb_user where userLogin=? and userPwd=? and userRoleId=?")) {
 			pstmt.setString(1, userName);
 			pstmt.setString(2, userPass);
+			pstmt.setInt(3, flag);
 			try (ResultSet rs = pstmt.executeQuery()) {
 				// 如果查询的ResultSet里有超过一条的记录，则登录成功
 				if (rs.next()) {
