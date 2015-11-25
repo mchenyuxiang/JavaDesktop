@@ -5,6 +5,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import ActionListener.RadioButtonListener;
 import util.FrameUtil;
 
 import java.util.*;
@@ -24,9 +25,9 @@ public class LoginFrame {
 	private JTextField passField = new JTextField(20);
 	private JButton loginButton = new JButton("登录");
 	// 定义一个单选按钮，初始处于选中状态
-	private JRadioButton admin = new JRadioButton("管理员", true);
-	private JRadioButton sale = new JRadioButton("销售", false);
-	private JRadioButton supplier = new JRadioButton("经销商", false);
+	private JRadioButton admin = new JRadioButton("管理员");
+	private JRadioButton sale = new JRadioButton("销售");
+	private JRadioButton supplier = new JRadioButton("经销商");
 	private String saveValue = null;
 
 	private JFrame jf1 = new JFrame("登录");
@@ -73,35 +74,16 @@ public class LoginFrame {
 		admin.addActionListener(radioButtonListener);
 		sale.addActionListener(radioButtonListener);
 		supplier.addActionListener(radioButtonListener);
-		System.out.println(radioButtonListener.saveValueTemp);
-		saveValue = radioButtonListener.saveValueTemp;
 		loginButton.addActionListener(isLoginIn);
 	}
 
-	// 判断选择哪个角色登录
-	public class RadioButtonListener implements ActionListener {
-		String saveValueTemp = null;
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			JRadioButton temp = (JRadioButton) arg0.getSource();
-			if (temp.isSelected()) {
-				saveValueTemp = temp.getText();
-				// System.out.println(temp.getText());
-//				System.out.println(saveValueTemp);
-			}
-
-		}
-
-	}
 
 	// 判断是否能正常登录
 	public class IsLoginIn implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
-			System.out.println(saveValue);
+			saveValue = radioButtonListener.getSaveValueTemp();
 			int flag = 0;
 			if (saveValue.equals("管理员")) {
 				flag = 1;
