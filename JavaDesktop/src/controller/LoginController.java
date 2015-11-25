@@ -1,4 +1,4 @@
-package SwingStudy;
+package controller;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -13,7 +13,7 @@ import java.util.*;
 import java.io.*;
 import java.sql.*;
 
-public class LoginFrame {
+public class LoginController {
 	private final String PROP_FILE = "config/mysql.ini";
 	private String driver;
 	// url是数据库的服务地址
@@ -127,7 +127,7 @@ public class LoginFrame {
 				}
 				// 否则显示“登录失败”
 				else {
-					JOptionPane.showMessageDialog(jf, "登录失败");
+					JOptionPane.showMessageDialog(jf, "登录失败请检查用户名或者联系管理员");
 				}
 			}
 			
@@ -136,9 +136,7 @@ public class LoginFrame {
 
 	}
 
-	
-
 	public static void main(String[] args) throws Exception {
-		new LoginFrame().init();
+		new LoginController().init();
 	}
 }
