@@ -33,7 +33,12 @@ public class AdminController {
 	private Box shopVerticalRight = Box.createVerticalBox();
 	private Box departVerticalRight = Box.createVerticalBox();
 	private Box destinationVerticalRight = Box.createVerticalBox();
+	int adminId;
 
+	public AdminController(int adminId){
+		this.adminId = adminId;
+	}
+	
 	public void init() {
 		verticalLeft.add(saleButton);
 		verticalLeft.add(supplierButton);
@@ -292,7 +297,7 @@ public class AdminController {
 
 	}
 
-	public static void main(String[] args) {
-		new AdminController().init();
-	}
+//	public static void main(String[] args) {
+//		new AdminController().init();
+//	}
 }
