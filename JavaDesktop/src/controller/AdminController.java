@@ -74,33 +74,66 @@ public class AdminController {
 		verticalLeft.add(departButton);
 		verticalLeft.add(destinationButton);
 
-		// JPanel jPanel1 = new JPanel();
-		// jPanel1.add(new JLabel("用户名："));
-		// jPanel1.add(new JTextField(20));
-		// JPanel jPanel2 = new JPanel();
-		// jPanel2.add(new JLabel("姓名："));
-		// jPanel2.add(new JTextField(20));
-		// JPanel jPanel3 = new JPanel();
-		// jPanel3.add(new JLabel("姓名："));
-		// jPanel3.add(new JTextField(20));
-		// JPanel jPanel4 = new JPanel();
-		// jPanel4.add(new JLabel("姓名："));
-		// jPanel4.add(new JTextField(20));
-		// JPanel jPanel5 = new JPanel();
-		// jPanel5.add(new JLabel("姓名："));
-		// jPanel5.add(new JTextField(20));
-		// JPanel jPanel6 = new JPanel();
-		// jPanel6.add(new JButton("确认"));
-		//
-		// saleVerticalRight.add(jPanel1);
-		// saleVerticalRight.add(jPanel2);
-		// saleVerticalRight.add(jPanel3);
-		// saleVerticalRight.add(jPanel4);
-		// saleVerticalRight.add(jPanel5);
-		// saleVerticalRight.add(jPanel6);
+		JPanel jPanel1 = new JPanel();
+		jPanel1.add(new JLabel("用户名："));
+		final JTextField salerName = new JTextField(20);
+		jPanel1.add(salerName);
+
+		JPanel jPanel2 = new JPanel();
+		jPanel2.add(new JLabel("电话："));
+		final JTextField salerPhone = new JTextField(20);
+		jPanel2.add(salerPhone);
+
+		JPanel jPanel3 = new JPanel();
+		jPanel3.add(new JLabel("座机："));
+		final JTextField salerTel = new JTextField(20);
+		jPanel3.add(salerTel);
+
+		JPanel jPanel4 = new JPanel();
+		jPanel4.add(new JLabel("QQ："));
+		final JTextField salerQQ = new JTextField(20);
+		jPanel4.add(salerQQ);
+
+		JPanel jPanel5 = new JPanel();
+		jPanel5.add(new JLabel("微信："));
+		final JTextField salerWeiXin = new JTextField(20);
+		jPanel5.add(salerWeiXin);
+
+		JPanel jPanel7 = new JPanel();
+		jPanel7.add(new JLabel("密码："));
+		final JTextField salerPassword = new JTextField(20);
+		jPanel7.add(salerPassword);
+
+		JPanel jPanel6 = new JPanel();
+		JButton jButton = new JButton("确认");
+		jPanel6.add(jButton);
+
+		saleVerticalRight.add(jPanel1);
+		saleVerticalRight.add(jPanel2);
+		saleVerticalRight.add(jPanel3);
+		saleVerticalRight.add(jPanel4);
+		saleVerticalRight.add(jPanel5);
+		saleVerticalRight.add(jPanel7);
+		saleVerticalRight.add(jPanel6);
+		jf.add(saleVerticalRight, BorderLayout.CENTER);
+
+		jButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (adminDao.insertSale(salerName.getText(),
+						salerPhone.getText(), salerTel.getText(),
+						salerQQ.getText(), salerWeiXin.getText(),
+						salerPassword.getText(), url, user, pass)) {
+					JOptionPane.showMessageDialog(jf, "添加销售成功");
+				} else {
+					JOptionPane.showMessageDialog(jf, "添加销售失败");
+				}
+			}
+		});
 
 		jf.add(verticalLeft, BorderLayout.WEST);
-		// jf.add(saleVerticalRight, BorderLayout.CENTER);
+		jf.add(saleVerticalRight, BorderLayout.CENTER);
 
 		FrameUtil.initFrame(jf, 500, 400);
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -303,7 +336,7 @@ public class AdminController {
 			jPanel1.add(new JLabel("店铺名称："));
 			final JTextField shopName = new JTextField(20);
 			jPanel1.add(shopName);
-			
+
 			JPanel jPanel2 = new JPanel();
 			jPanel2.add(new JLabel("店铺信息："));
 			final JTextArea shopInfo = new JTextArea(10, 20);
@@ -323,7 +356,8 @@ public class AdminController {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if (adminDao.insertShop(shopName.getText(), shopInfo.getText(), url, user, pass)) {
+					if (adminDao.insertShop(shopName.getText(),
+							shopInfo.getText(), url, user, pass)) {
 						JOptionPane.showMessageDialog(jf, "添加门店成功");
 					} else {
 						JOptionPane.showMessageDialog(jf, "添加门店失败");
@@ -354,7 +388,7 @@ public class AdminController {
 			jPanel1.add(new JLabel("城市名称："));
 			final JTextField departName = new JTextField(20);
 			jPanel1.add(departName);
-			
+
 			JPanel jPanel2 = new JPanel();
 			jPanel2.add(new JLabel("城市信息："));
 			final JTextArea departInfo = new JTextArea(10, 20);
@@ -368,12 +402,13 @@ public class AdminController {
 			departVerticalRight.add(jPanel2);
 			departVerticalRight.add(jPanel6);
 			jf.add(departVerticalRight, BorderLayout.CENTER);
-			
+
 			jButton.addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if (adminDao.insertDepart(departName.getText(), departInfo.getText(), url, user, pass)) {
+					if (adminDao.insertDepart(departName.getText(),
+							departInfo.getText(), url, user, pass)) {
 						JOptionPane.showMessageDialog(jf, "添加出发地成功");
 					} else {
 						JOptionPane.showMessageDialog(jf, "添加出发地失败");
@@ -405,7 +440,7 @@ public class AdminController {
 			jPanel1.add(new JLabel("目的地："));
 			final JTextField destinationName = new JTextField(20);
 			jPanel1.add(destinationName);
-			
+
 			JPanel jPanel2 = new JPanel();
 			jPanel2.add(new JLabel("目的地信息："));
 			final JTextArea destinationInfo = new JTextArea(10, 20);
@@ -419,12 +454,13 @@ public class AdminController {
 			destinationVerticalRight.add(jPanel2);
 			destinationVerticalRight.add(jPanel6);
 			jf.add(destinationVerticalRight, BorderLayout.CENTER);
-			
+
 			jButton.addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if (adminDao.insertDestination(destinationName.getText(), destinationInfo.getText(), url, user, pass)) {
+					if (adminDao.insertDestination(destinationName.getText(),
+							destinationInfo.getText(), url, user, pass)) {
 						JOptionPane.showMessageDialog(jf, "添加目的地成功");
 					} else {
 						JOptionPane.showMessageDialog(jf, "添加目的地失败");
@@ -436,12 +472,12 @@ public class AdminController {
 
 	}
 
-//	public static void main(String[] args) {
-//		try {
-//			new AdminController().init();
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
+	// public static void main(String[] args) {
+	// try {
+	// new AdminController().init();
+	// } catch (Exception e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	// }
 }

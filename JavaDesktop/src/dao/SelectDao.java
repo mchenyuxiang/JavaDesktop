@@ -18,7 +18,7 @@ public class SelectDao {
 //	private static String pass;
 
 	// 查询销售名称
-	public ArrayList<String> selectSalerName(String url, String user, String pass) {
+	public ArrayList<String> salerNameSelect(String url, String user, String pass) {
 		ArrayList<String> salerName = new ArrayList<>();
 
 		try {
@@ -42,7 +42,7 @@ public class SelectDao {
 	}
 	
 	// 查询供应商名称
-	public ArrayList<String> selectSupplierName(String url, String user, String pass) {
+	public ArrayList<String> supplierNameSelect(String url, String user, String pass) {
 		ArrayList<String> supplierName = new ArrayList<>();
 		
 		try {
@@ -63,6 +63,78 @@ public class SelectDao {
 			e.printStackTrace();
 		}
 		return supplierName;
+	}
+	
+	// 查询店铺名称
+	public ArrayList<String> shopNameSelect(String url, String user, String pass) {
+		ArrayList<String> shopName = new ArrayList<>();
+		
+		try {
+			Connection conn = DriverManager.getConnection(url, user, pass);
+			String query = "select shopName from tb_shop";
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			
+			while(rs.next()){
+				String temp = rs.getString("shopName");
+				shopName.add(temp);
+			}
+			
+			conn.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return shopName;
+	}
+	
+	// 查询出发城市名称
+	public ArrayList<String> departNameSelect(String url, String user, String pass) {
+		ArrayList<String>  departName = new ArrayList<>();
+		
+		try {
+			Connection conn = DriverManager.getConnection(url, user, pass);
+			String query = "select  departName from tb_depart";
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			
+			while(rs.next()){
+				String temp = rs.getString("departName");
+				 departName.add(temp);
+			}
+			
+			conn.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return  departName;
+	}
+	
+	// 查询目的地名称
+	public ArrayList<String> destinationNameselect(String url, String user, String pass) {
+		ArrayList<String> destinationName = new ArrayList<>();
+		
+		try {
+			Connection conn = DriverManager.getConnection(url, user, pass);
+			String query = "select destinationName from tb_destination";
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			
+			while(rs.next()){
+				String temp = rs.getString("destinationName");
+				destinationName.add(temp);
+			}
+			
+			conn.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return destinationName;
 	}
 	
 //	public static void main(String[] args) throws Exception {
