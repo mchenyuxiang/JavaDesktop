@@ -3,17 +3,29 @@ package controller;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.util.Properties;
 
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import dao.AdminDao;
+import util.FrameUtil;
+
 public class AdminController {
+	private final String PROP_FILE = "config/mysql.ini";
+	private String driver;
+	// url是数据库的服务地址
+	private String url;
+	private String user;
+	private String pass;
 
 	private JFrame jf = new JFrame("管理员界面");
 
@@ -35,46 +47,62 @@ public class AdminController {
 	private Box destinationVerticalRight = Box.createVerticalBox();
 	int adminId;
 
-	public AdminController(int adminId){
+	// 管理员添加数据dao方法
+	private AdminDao adminDao = new AdminDao();
+
+	public AdminController() {
+
+	}
+
+	public AdminController(int adminId) {
 		this.adminId = adminId;
 	}
-	
-	public void init() {
+
+	public void init() throws Exception {
+		Properties connProp = new Properties();
+		connProp.load(new FileInputStream(PROP_FILE));
+		driver = connProp.getProperty("driver");
+		url = connProp.getProperty("url");
+		user = connProp.getProperty("user");
+		pass = connProp.getProperty("pass");
+		// 加载驱动
+		Class.forName(driver);
+
 		verticalLeft.add(saleButton);
 		verticalLeft.add(supplierButton);
 		verticalLeft.add(shopButton);
 		verticalLeft.add(departButton);
 		verticalLeft.add(destinationButton);
 
-		JPanel jPanel1 = new JPanel();
-		jPanel1.add(new JLabel("用户名："));
-		jPanel1.add(new JTextField(20));
-		JPanel jPanel2 = new JPanel();
-		jPanel2.add(new JLabel("姓名："));
-		jPanel2.add(new JTextField(20));
-		JPanel jPanel3 = new JPanel();
-		jPanel3.add(new JLabel("姓名："));
-		jPanel3.add(new JTextField(20));
-		JPanel jPanel4 = new JPanel();
-		jPanel4.add(new JLabel("姓名："));
-		jPanel4.add(new JTextField(20));
-		JPanel jPanel5 = new JPanel();
-		jPanel5.add(new JLabel("姓名："));
-		jPanel5.add(new JTextField(20));
-		JPanel jPanel6 = new JPanel();
-		jPanel6.add(new JButton("确认"));
-
-		saleVerticalRight.add(jPanel1);
-		saleVerticalRight.add(jPanel2);
-		saleVerticalRight.add(jPanel3);
-		saleVerticalRight.add(jPanel4);
-		saleVerticalRight.add(jPanel5);
-		saleVerticalRight.add(jPanel6);
+		// JPanel jPanel1 = new JPanel();
+		// jPanel1.add(new JLabel("用户名："));
+		// jPanel1.add(new JTextField(20));
+		// JPanel jPanel2 = new JPanel();
+		// jPanel2.add(new JLabel("姓名："));
+		// jPanel2.add(new JTextField(20));
+		// JPanel jPanel3 = new JPanel();
+		// jPanel3.add(new JLabel("姓名："));
+		// jPanel3.add(new JTextField(20));
+		// JPanel jPanel4 = new JPanel();
+		// jPanel4.add(new JLabel("姓名："));
+		// jPanel4.add(new JTextField(20));
+		// JPanel jPanel5 = new JPanel();
+		// jPanel5.add(new JLabel("姓名："));
+		// jPanel5.add(new JTextField(20));
+		// JPanel jPanel6 = new JPanel();
+		// jPanel6.add(new JButton("确认"));
+		//
+		// saleVerticalRight.add(jPanel1);
+		// saleVerticalRight.add(jPanel2);
+		// saleVerticalRight.add(jPanel3);
+		// saleVerticalRight.add(jPanel4);
+		// saleVerticalRight.add(jPanel5);
+		// saleVerticalRight.add(jPanel6);
 
 		jf.add(verticalLeft, BorderLayout.WEST);
-		jf.add(saleVerticalRight, BorderLayout.CENTER);
+		// jf.add(saleVerticalRight, BorderLayout.CENTER);
 
-		jf.pack();
+		FrameUtil.initFrame(jf, 500, 400);
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jf.setVisible(true);
 
@@ -104,24 +132,37 @@ public class AdminController {
 
 			JPanel jPanel1 = new JPanel();
 			jPanel1.add(new JLabel("用户名："));
-			jPanel1.add(new JTextField(20));
+			final JTextField salerName = new JTextField(20);
+			jPanel1.add(salerName);
+			
 			JPanel jPanel2 = new JPanel();
 			jPanel2.add(new JLabel("电话："));
-			jPanel2.add(new JTextField(20));
+			final JTextField salerPhone = new JTextField(20);
+			jPanel2.add(salerPhone);
+			
 			JPanel jPanel3 = new JPanel();
 			jPanel3.add(new JLabel("座机："));
-			jPanel3.add(new JTextField(20));
+			final JTextField salerTel = new JTextField(20);
+			jPanel3.add(salerTel);
+			
 			JPanel jPanel4 = new JPanel();
 			jPanel4.add(new JLabel("QQ："));
-			jPanel4.add(new JTextField(20));
+			final JTextField salerQQ = new JTextField(20);
+			jPanel4.add(salerQQ);
+			
 			JPanel jPanel5 = new JPanel();
 			jPanel5.add(new JLabel("微信："));
-			jPanel5.add(new JTextField(20));
+			final JTextField salerWeiXin = new JTextField(20);
+			jPanel5.add(salerWeiXin);
+			
 			JPanel jPanel7 = new JPanel();
 			jPanel7.add(new JLabel("密码："));
-			jPanel7.add(new JTextField(20));
+			final JTextField salerPassword = new JTextField(20);
+			jPanel7.add(salerPassword);
+			
 			JPanel jPanel6 = new JPanel();
-			jPanel6.add(new JButton("确认"));
+			JButton jButton = new JButton("确认");
+			jPanel6.add(jButton);
 
 			saleVerticalRight.add(jPanel1);
 			saleVerticalRight.add(jPanel2);
@@ -131,9 +172,21 @@ public class AdminController {
 			saleVerticalRight.add(jPanel7);
 			saleVerticalRight.add(jPanel6);
 			jf.add(saleVerticalRight, BorderLayout.CENTER);
+			
+			jButton.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(adminDao.insertSale(salerName.getText(), salerPhone.getText(), salerTel.getText()
+							, salerQQ.getText(), salerWeiXin.getText(), salerPassword.getText(), url, user, pass)){
+						JOptionPane.showMessageDialog(jf, "添加销售成功");
+					}else{
+						JOptionPane.showMessageDialog(jf, "添加销售失败");
+					}
+				}
+			});
 
 		}
-
 	}
 
 	// 经销商添加资料界面
@@ -215,10 +268,10 @@ public class AdminController {
 			jPanel1.add(new JTextField(20));
 			JPanel jPanel2 = new JPanel();
 			jPanel2.add(new JLabel("店铺信息："));
-			jPanel2.add(new JTextArea(10,20));
+			jPanel2.add(new JTextArea(10, 20));
 			JPanel jPanel6 = new JPanel();
 			jPanel6.add(new JButton("确认"));
-			
+
 			shopVerticalRight.add(jPanel1);
 			shopVerticalRight.add(jPanel2);
 			shopVerticalRight.add(jPanel6);
@@ -250,7 +303,7 @@ public class AdminController {
 			jPanel1.add(new JTextField(20));
 			JPanel jPanel2 = new JPanel();
 			jPanel2.add(new JLabel("城市信息："));
-			jPanel2.add(new JTextArea(10,20));
+			jPanel2.add(new JTextArea(10, 20));
 			JPanel jPanel6 = new JPanel();
 			jPanel6.add(new JButton("确认"));
 
@@ -284,7 +337,7 @@ public class AdminController {
 			jPanel1.add(new JTextField(20));
 			JPanel jPanel2 = new JPanel();
 			jPanel2.add(new JLabel("目的地信息："));
-			jPanel2.add(new JTextArea(10,20));
+			jPanel2.add(new JTextArea(10, 20));
 			JPanel jPanel6 = new JPanel();
 			jPanel6.add(new JButton("确认"));
 
@@ -297,7 +350,12 @@ public class AdminController {
 
 	}
 
-//	public static void main(String[] args) {
-//		new AdminController().init();
-//	}
+	public static void main(String[] args) {
+		try {
+			new AdminController().init();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

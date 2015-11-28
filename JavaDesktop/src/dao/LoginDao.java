@@ -18,6 +18,7 @@ public class LoginDao {
 				// 如果查询的ResultSet里有超过一条的记录，则登录成功
 				if (rs.next()) {
 					int adminId = rs.getInt("adminId");
+					conn.close();
 					return adminId;
 				}
 			}
@@ -37,6 +38,7 @@ public class LoginDao {
 			try (ResultSet rs = pstmt.executeQuery()) {
 				// 如果查询的ResultSet里有超过一条的记录，则登录成功
 				if (rs.next()) {
+					conn.close();
 					return true;
 				}
 			}
@@ -56,6 +58,7 @@ public class LoginDao {
 			try (ResultSet rs = pstmt.executeQuery()) {
 				// 如果查询的ResultSet里有超过一条的记录，则登录成功
 				if (rs.next()) {
+					conn.close();
 					return true;
 				}
 			}

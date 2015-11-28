@@ -98,7 +98,12 @@ public class LoginController {
 //					jf1.pack();
 //					jf1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //					jf1.setVisible(true);
-					new AdminController(adminId).init();
+					try {
+						new AdminController(adminId).init();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 				// ∑Ò‘Úœ‘ æ°∞µ«¬º ß∞‹°±
 				else {
