@@ -89,7 +89,7 @@ public class LoginFrame {
 			saveValue = radioButtonListener.getSaveValueTemp();
 			if (saveValue.equals("管理员")) {
 				// 登录成功则显示“登录成功”
-				if (login.adminValidate(userField.getText(), passField.getText(),url,user,pass)) {
+				if ((login.adminValidate(userField.getText(), passField.getText(),url,user,pass)) != -1) {
 					JOptionPane.showMessageDialog(jf, saveValue + "登录成功");
 					// 关闭窗口
 					jf.dispose();

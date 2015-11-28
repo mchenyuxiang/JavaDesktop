@@ -89,13 +89,16 @@ public class LoginController {
 			saveValue = radioButtonListener.getSaveValueTemp();
 			if (saveValue.equals("管理员")) {
 				// 登录成功则显示“登录成功”
-				if (login.adminValidate(userField.getText(), passField.getText(),url,user,pass)) {
+				int adminId;
+				adminId = login.adminValidate(userField.getText(), passField.getText(),url,user,pass);
+				if (adminId != -1) {
 					JOptionPane.showMessageDialog(jf, saveValue + "登录成功");
 					// 关闭窗口
 					jf.dispose();
-					jf1.pack();
-					jf1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					jf1.setVisible(true);
+//					jf1.pack();
+//					jf1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//					jf1.setVisible(true);
+					new AdminController(adminId).init();
 				}
 				// 否则显示“登录失败”
 				else {

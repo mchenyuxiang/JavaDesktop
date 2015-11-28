@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 public class LoginDao {
 
 	//判断管理员是否能登陆
-	public boolean adminValidate(String userName, String userPass, String url,String user,String pass) {
+	public int adminValidate(String userName, String userPass, String url,String user,String pass) {
 		try (Connection conn = DriverManager.getConnection(url, user, pass);
 				PreparedStatement pstmt = conn
 						.prepareStatement("select * from tb_admin where adminName=? and adminPassword=?")) {
@@ -17,13 +17,14 @@ public class LoginDao {
 			try (ResultSet rs = pstmt.executeQuery()) {
 				// 如果查询的ResultSet里有超过一条的记录，则登录成功
 				if (rs.next()) {
-					return true;
+					int adminId = rs.getInt("adminId");
+					return adminId;
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 	
 	//判断销售人员是否能登陆
