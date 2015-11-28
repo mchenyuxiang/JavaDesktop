@@ -67,10 +67,11 @@ public class LoginController {
 		vertical.add(loginButton);
 
 		jf.add(vertical);
-		jf.pack();
+//		jf.pack();
+		 FrameUtil.initFrame(jf, 300, 150);
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jf.setVisible(true);
-		// FrameUtil.initFrame(jf, 300, 150);
+		
 
 		// 为登录按钮添加事件监听器
 		radioButtonListener = new RadioButtonListener();

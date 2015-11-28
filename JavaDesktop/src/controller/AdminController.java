@@ -37,6 +37,7 @@ public class AdminController {
 	private JButton shopButton = new JButton("添加店铺");
 	private JButton departButton = new JButton("添加出发城市");
 	private JButton destinationButton = new JButton("添加目的地");
+	private JButton lineButton = new JButton("添加线路");
 
 	// 垂直摆放
 	private Box verticalLeft = Box.createVerticalBox();
@@ -73,6 +74,7 @@ public class AdminController {
 		verticalLeft.add(shopButton);
 		verticalLeft.add(departButton);
 		verticalLeft.add(destinationButton);
+		verticalLeft.add(lineButton);
 
 		JPanel jPanel1 = new JPanel();
 		jPanel1.add(new JLabel("用户名："));
@@ -144,6 +146,17 @@ public class AdminController {
 		shopButton.addActionListener(new ShopInfo());
 		departButton.addActionListener(new DepartInfo());
 		destinationButton.addActionListener(new DesinationInfo());
+		lineButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					new LineController().init();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 
 	}
 

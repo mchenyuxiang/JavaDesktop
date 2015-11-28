@@ -1,6 +1,8 @@
 package controller;
 
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -10,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -26,6 +29,8 @@ public class LineController {
 	private String user;
 	private String pass;
 
+	private JFrame jf = new JFrame("线路添加");
+	
 	// 销售名称下拉框
 	private JComboBox<String> salerNameComboBox = new JComboBox<String>();
 	// 供应商名称下拉框
@@ -67,7 +72,7 @@ public class LineController {
 		// 加载驱动
 		Class.forName(driver);
 
-		JFrame jf = new JFrame("线路添加");
+		
 
 		// 销售名称下拉框查询
 		salerNameArrayList.addAll(selectDao.salerNameSelect(url, user, pass));
@@ -96,77 +101,75 @@ public class LineController {
 		for (String st : departNameArrayList) {
 			departNameComboBox.addItem(st);
 		}
-		
-		//线路名称
-		JPanel lineNamePane=new JPanel();
-		lineNamePane.setBorder(new EmptyBorder(5,5,5,5));
-		lineNamePane.setLayout(new FlowLayout(FlowLayout.CENTER,5,5));
+
+		// 线路名称
+		JPanel lineNamePane = new JPanel();
+		lineNamePane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		lineNamePane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JLabel lineNameLabel = new JLabel("线路名称:");
 		final JTextField lineNameTextField = new JTextField(20);
 		lineNamePane.add(lineNameLabel);
 		lineNamePane.add(lineNameTextField);
-		
-		//销售名称
-		JPanel salerNamePane=new JPanel();
-		salerNamePane.setBorder(new EmptyBorder(5,5,5,5));
-		salerNamePane.setLayout(new FlowLayout(FlowLayout.CENTER,5,5));
+
+		// 销售名称
+		JPanel salerNamePane = new JPanel();
+		salerNamePane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		salerNamePane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JLabel salerNameLabel = new JLabel("销售名称:");
 		salerNamePane.add(salerNameLabel);
 		salerNamePane.add(salerNameComboBox);
-		
-		//供应商名称
-		JPanel supplierNamePane=new JPanel();
-		supplierNamePane.setBorder(new EmptyBorder(5,5,5,5));
-		supplierNamePane.setLayout(new FlowLayout(FlowLayout.CENTER,5,5));
+
+		// 供应商名称
+		JPanel supplierNamePane = new JPanel();
+		supplierNamePane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		supplierNamePane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JLabel supplierNameLabel = new JLabel("供应商名称:");
 		supplierNamePane.add(supplierNameLabel);
 		supplierNamePane.add(supplierNameComboBox);
-		
-		//店铺名称
-		JPanel shopNamePane=new JPanel();
-		shopNamePane.setBorder(new EmptyBorder(5,5,5,5));
-		shopNamePane.setLayout(new FlowLayout(FlowLayout.CENTER,5,5));
+
+		// 店铺名称
+		JPanel shopNamePane = new JPanel();
+		shopNamePane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		shopNamePane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JLabel shopNameLabel = new JLabel("供应商名称:");
 		shopNamePane.add(shopNameLabel);
 		shopNamePane.add(shopNameComboBox);
-		
-		//出发地名称
-		JPanel departNamePane=new JPanel();
-		departNamePane.setBorder(new EmptyBorder(5,5,5,5));
-		departNamePane.setLayout(new FlowLayout(FlowLayout.CENTER,5,5));
+
+		// 出发地名称
+		JPanel departNamePane = new JPanel();
+		departNamePane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		departNamePane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JLabel departNameLabel = new JLabel("出发地名称:");
 		departNamePane.add(departNameLabel);
 		departNamePane.add(departNameComboBox);
-		
-		//目的地名称
-		JPanel destinationNamePane=new JPanel();
-		destinationNamePane.setBorder(new EmptyBorder(5,5,5,5));
-		destinationNamePane.setLayout(new FlowLayout(FlowLayout.CENTER,5,5));
+
+		// 目的地名称
+		JPanel destinationNamePane = new JPanel();
+		destinationNamePane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		destinationNamePane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JLabel destinationNameLabel = new JLabel("目的地名称:");
 		destinationNamePane.add(destinationNameLabel);
 		destinationNamePane.add(destinationNameComboBox);
-		
-		
-		JPanel jPanel6 = new JPanel();
-		JButton jButton = new JButton("确认添加");
-		jPanel6.add(jButton);
-		
+
+		JPanel confPanel = new JPanel();
+		JButton confButton = new JButton("确认添加");
+		confPanel.add(confButton);
+
 		JPanel jPanel2 = new JPanel();
 		jPanel2.add(new JLabel("自费信息："));
 		final JTextArea shopInfo = new JTextArea(10, 20);
 		jPanel2.add(shopInfo);
-		
-		//目的地名称
-		JPanel flyPane=new JPanel();
-		flyPane.setBorder(new EmptyBorder(5,5,5,5));
-		flyPane.setLayout(new FlowLayout(FlowLayout.CENTER,5,5));
+
+		// 目的地名称
+		JPanel flyPane = new JPanel();
+		flyPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		flyPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JLabel flyLabel = new JLabel("是否转机:");
 		flyComboBox.addItem("是");
 		flyComboBox.addItem("否");
 		flyPane.add(flyLabel);
 		flyPane.add(flyComboBox);
-		
-		
+
 		vertical.add(lineNamePane);
 		vertical.add(salerNamePane);
 		vertical.add(supplierNamePane);
@@ -175,19 +178,40 @@ public class LineController {
 		vertical.add(destinationNamePane);
 		vertical.add(jPanel2);
 		vertical.add(flyPane);
-		vertical.add(jPanel6);
-		
+		vertical.add(confPanel);
+
 		jf.add(vertical);
 		FrameUtil.initFrame(jf, 500, 800);
-		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		//关闭当前窗口
+		jf.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		jf.setVisible(true);
+
+		confButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (selectDao.lineAdd(lineNameTextField.getText(),
+						(String) salerNameComboBox.getSelectedItem(),
+						(String) supplierNameComboBox.getSelectedItem(),
+						(String) shopNameComboBox.getSelectedItem(),
+						(String) destinationNameComboBox.getSelectedItem(),
+						(String) departNameComboBox.getSelectedItem(),
+						shopInfo.getText(), (String) flyComboBox.getSelectedItem(), url,
+						user, pass)) {
+					JOptionPane.showMessageDialog(jf, "添加线路成功");
+				} else {
+					JOptionPane.showMessageDialog(jf, "添加线路失败");
+				}
+			}
+		});
 	}
 
-	public static void main(String[] args) {
-		try {
-			new LineController().init();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String[] args) {
+//		try {
+//			new LineController().init();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 }

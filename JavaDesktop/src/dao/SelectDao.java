@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -135,6 +136,37 @@ public class SelectDao {
 			e.printStackTrace();
 		}
 		return destinationName;
+	}
+	
+	public boolean lineAdd(String lineName,String salerName,String supplierName,String shopName
+			,String destinationName,String departName,String expenseInfo,String isThrough,String url, String user, String pass){
+		try {
+			Connection conn = DriverManager.getConnection(url, user, pass);
+			String query = "insert into tb_line (lineName,salerName,supplierName,shopName,destinationName,departName,expenseInfo,isThrough) "
+					+ "values (?,?,?,?,?,?,?,?)";
+			PreparedStatement pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, lineName);
+			pstmt.setString(2, salerName);
+			pstmt.setString(3, supplierName);
+			pstmt.setString(4, shopName);
+			pstmt.setString(5, destinationName);
+			pstmt.setString(6, departName);
+			pstmt.setString(7, expenseInfo);
+			pstmt.setString(8, isThrough);
+
+			if (pstmt.executeUpdate() > 0) {
+				conn.close();
+				return true;
+			} else {
+				conn.close();
+				return false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
 	
 //	public static void main(String[] args) throws Exception {
