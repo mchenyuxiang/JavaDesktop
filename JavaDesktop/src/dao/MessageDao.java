@@ -1,0 +1,31 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+
+public class MessageDao {
+
+	public boolean insertMessage(Integer messageId ,String messageEnd,String url, String user, String pass){
+		try {
+			Connection conn = DriverManager.getConnection(url, user, pass);
+			String query = "UPDATE  `tb_message` SET messageEnd = ? WHERE messageId = ?";
+			PreparedStatement pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, messageEnd);
+			pstmt.setInt(2, messageId);
+
+
+			if (pstmt.executeUpdate() > 0) {
+				conn.close();
+				return true;
+			} else {
+				conn.close();
+				return false;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+}
