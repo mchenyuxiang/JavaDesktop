@@ -91,15 +91,22 @@ public class MessageController {
 				Connection conn = DriverManager.getConnection(url, user, pass);
 				Statement stmt = conn.createStatement();
 				// 根据用户输入的SQL执行查询
-				ResultSet rs = stmt.executeQuery("select * from tb_message");
+				ResultSet rs = stmt
+						.executeQuery("select messageId,messageStart,messageEnd,messageStatus,messageInfo from tb_message");
 				// 取出ResultSet的MetaData
 				ResultSetMetaData rsmd = rs.getMetaData();
 				Vector<String> columnNames = new Vector<>();
 				Vector<Vector<String>> data = new Vector<>();
 				// 把ResultSet的所有列名添加到Vector里
-				for (int i = 0; i < rsmd.getColumnCount(); i++) {
-					columnNames.add(rsmd.getColumnName(i + 1));
-				}
+				// for (int i = 0; i < rsmd.getColumnCount(); i++) {
+				// columnNames.add(rsmd.getColumnName(i + 1));
+				// }
+				columnNames.add("消息ID");
+				columnNames.add("消息发送者");
+				columnNames.add("消息接收者");
+				columnNames.add("消息已经被接受状态");
+				columnNames.add("消息信息");
+
 				// 把ResultSet的所有记录添加到Vector里
 				while (rs.next()) {
 					Vector<String> v = new Vector<>();
