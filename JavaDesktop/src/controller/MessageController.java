@@ -11,16 +11,21 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import dao.SelectDao;
 import util.FrameUtil;
 
 public class MessageController {
@@ -50,6 +55,14 @@ public class MessageController {
 
 	// 容器装jTable
 	private JScrollPane scrollPane;
+
+	private SelectDao selectDao = new SelectDao();
+
+	// 发送人员名单box列表
+	private List<JCheckBox> salerCheckBox = new ArrayList<JCheckBox>();
+
+	// 发送人员名单列表
+	private List<String> infos = new ArrayList<String>();
 
 	public void init() throws Exception {
 		Properties connProp = new Properties();
@@ -133,8 +146,49 @@ public class MessageController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
+			// 弹出对话框
+			// JOptionPane.showConfirmDialog(null, "choose one", "choose one",
+			// JOptionPane.YES_NO_CANCEL_OPTION);
 
+			JFrame salerJF = new JFrame("选择发送员工");
+
+			JPanel contentPane = new JPanel(); // 创建内容面板
+
+			ArrayList<String> salerName = new ArrayList<>();
+
+			salerName.addAll(selectDao.salerNameSelect(url, user, pass));
+
+			for (String str : salerName) {
+				JCheckBox jc = new JCheckBox(str);
+				contentPane.add(jc);
+				salerCheckBox.add(jc);
+			}
+
+			JButton sendButton = new JButton("发送");
+
+			sendButton.addActionListener(new ButtonSendMessage());
+
+			salerJF.add(contentPane, BorderLayout.CENTER);
+			FrameUtil.initFrame(salerJF, 500, 800);
+			// jf.pack();
+
+			// 关闭当前窗口
+			salerJF.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+			salerJF.setVisible(true);
+
+		}
+
+	}
+
+	public class ButtonSendMessage implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			for (JCheckBox checkBox : salerCheckBox) {
+				if (checkBox.isSelected()) {
+					infos.add(checkBox.getText());
+				}
+			}
 		}
 
 	}
