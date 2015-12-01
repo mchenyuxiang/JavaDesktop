@@ -39,7 +39,7 @@ public class MessageDao {
 			PreparedStatement pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, messageStart);
 			pstmt.setString(2, messageEnd);
-			pstmt.setString(3, "还没人看");
+			pstmt.setString(3, messageStart);
 			pstmt.setString(4, messageInfo);
 			
 			

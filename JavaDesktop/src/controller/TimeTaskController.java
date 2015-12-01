@@ -1,35 +1,83 @@
 package controller;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Properties;
+
+import javax.swing.JOptionPane;
+
+import dao.TimeDao;
+
 public class TimeTaskController {
-	
+	private final String PROP_FILE = "config/mysql.ini";
+	private String driver;
+	// url是数据库的服务地址
+	private String url;
+	private String user;
+	private String pass;
+
 	private String userName;
 	
-	public TimeTaskController(){
-		
+	private TimeDao timeDao = new TimeDao();
+
+	public TimeTaskController() {
+
 	}
-	
-	public TimeTaskController(String userName){
+
+	public TimeTaskController(String userName) {
 		this.userName = userName;
 	}
+
+	public void init() throws IOException, ClassNotFoundException {
+		// 数据库
+		Properties connProp = new Properties();
+		connProp.load(new FileInputStream(PROP_FILE));
+		driver = connProp.getProperty("driver");
+		url = connProp.getProperty("url");
+		user = connProp.getProperty("user");
+		pass = connProp.getProperty("pass");
+		// 加载驱动
+		Class.forName(driver);
+		
+		final ArrayList<String> messageInfo = new ArrayList<>();
+		
+		// run in a second
+		final long timeInterval = 1000;
+		Runnable runnable = new Runnable() {
+			public void run() {
+				while (true) {
+					// ------- code for task to run
+//					System.out.println("Hello !!");
+					messageInfo.addAll(timeDao.noLookMessage(userName, url, user, pass));
+					for(String message:messageInfo){
+//						 弹出对话框
+						 JOptionPane.showConfirmDialog(null, message, "新的线路消息",
+						 JOptionPane.YES_NO_OPTION);
+					}
+					// ------- ends here
+					try {
+						Thread.sleep(timeInterval);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		};
+		Thread thread = new Thread(runnable);
+		thread.start();
+	}
 	
-	 public static void main(String[] args) {  
-	        // run in a second  
-	        final long timeInterval = 1000;  
-	        Runnable runnable = new Runnable() {  
-	            public void run() {  
-	                while (true) {  
-	                    // ------- code for task to run  
-	                    System.out.println("Hello !!");  
-	                    // ------- ends here  
-	                    try {  
-	                        Thread.sleep(timeInterval);  
-	                    } catch (InterruptedException e) {  
-	                        e.printStackTrace();  
-	                    }  
-	                }  
-	            }  
-	        };  
-	        Thread thread = new Thread(runnable);  
-	        thread.start();  
-	    }  
+	public static void main(String[] args) {
+		try {
+			new TimeTaskController().init();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

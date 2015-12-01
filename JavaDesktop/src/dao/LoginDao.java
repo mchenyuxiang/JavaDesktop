@@ -79,17 +79,20 @@ public class LoginDao {
 		String userName = "";
 		try {
 			Connection conn = DriverManager.getConnection(url, user, pass);
-			String query = "select salerName from tb_saler";
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
+//			String query = "select salerName from tb_saler";
+//			Statement stmt = conn.createStatement();
+//			 stmt.executeQuery(query);
+			ResultSet rs = null;
 			if (flag == 0) {
 				PreparedStatement pstmt = conn
 						.prepareStatement("select adminName from tb_admin where adminId = ?");
 				pstmt.setInt(1, userId);
+				rs = pstmt.executeQuery();
 			} else if (flag == 1) {
 				PreparedStatement pstmt = conn
 						.prepareStatement("select salerName from tb_saler where salerId = ?");
 				pstmt.setInt(1, userId);
+				 rs = pstmt.executeQuery();
 			}
 
 			
@@ -100,7 +103,7 @@ public class LoginDao {
 					if (flag == 0) {
 						temp = rs.getString("adminName");
 					} else if (flag == 1) {
-						temp = rs.getString("adminName");
+						temp = rs.getString("salerName");
 					}
 					userName = temp;
 					conn.close();

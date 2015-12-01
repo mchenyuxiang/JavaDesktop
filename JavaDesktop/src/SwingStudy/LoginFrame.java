@@ -5,6 +5,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import controller.TimeTaskController;
 import dao.LoginDao;
 import ActionListener.RadioButtonListener;
 import util.FrameUtil;
@@ -91,6 +92,13 @@ public class LoginFrame {
 				// 登录成功则显示“登录成功”
 				if ((login.adminValidate(userField.getText(), passField.getText(),url,user,pass)) != -1) {
 					JOptionPane.showMessageDialog(jf, saveValue + "登录成功");
+					try {
+						new TimeTaskController().init();
+					} catch (ClassNotFoundException e1) {
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 					// 关闭窗口
 					jf.dispose();
 					jf1.pack();

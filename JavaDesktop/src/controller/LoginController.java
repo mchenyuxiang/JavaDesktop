@@ -94,8 +94,18 @@ public class LoginController {
 				String userName = "";
 				adminId = login.adminValidate(userField.getText(), passField.getText(),url,user,pass);
 				if (adminId != -1) {
+					
 					JOptionPane.showMessageDialog(jf, saveValue + "登录成功");
 					userName = login.getAdminName(adminId, 0, url, user, pass);
+					try {
+						new TimeTaskController(userName).init();
+					} catch (ClassNotFoundException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					} catch (IOException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
 					// 关闭窗口
 					jf.dispose();
 //					jf1.pack();
