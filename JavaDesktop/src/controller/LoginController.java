@@ -90,17 +90,19 @@ public class LoginController {
 			saveValue = radioButtonListener.getSaveValueTemp();
 			if (saveValue.equals("管理员")) {
 				// 登录成功则显示“登录成功”
-				int adminId;
+				int adminId = -1;
+				String userName = "";
 				adminId = login.adminValidate(userField.getText(), passField.getText(),url,user,pass);
 				if (adminId != -1) {
 					JOptionPane.showMessageDialog(jf, saveValue + "登录成功");
+					userName = login.getAdminName(adminId, 0, url, user, pass);
 					// 关闭窗口
 					jf.dispose();
 //					jf1.pack();
 //					jf1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //					jf1.setVisible(true);
 					try {
-						new AdminController(adminId).init();
+						new AdminController(userName).init();
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -112,7 +114,9 @@ public class LoginController {
 				}
 			} else if (saveValue.equals("销售")) {
 				// 登录成功则显示“登录成功”
-				if (login.salerValidate(userField.getText(), passField.getText(),url,user,pass)) {
+				int salerId = -1;
+				salerId = login.salerValidate(userField.getText(), passField.getText(),url,user,pass);
+				if (salerId != -1) {
 					JOptionPane.showMessageDialog(jf, saveValue + "登录成功");
 					// 关闭窗口
 					jf.dispose();

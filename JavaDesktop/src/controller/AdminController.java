@@ -46,7 +46,8 @@ public class AdminController {
 	private Box shopVerticalRight = Box.createVerticalBox();
 	private Box departVerticalRight = Box.createVerticalBox();
 	private Box destinationVerticalRight = Box.createVerticalBox();
-	int adminId;
+	private int userId;
+	private String userName;
 
 	// 管理员添加数据dao方法
 	private AdminDao adminDao = new AdminDao();
@@ -55,8 +56,8 @@ public class AdminController {
 
 	}
 
-	public AdminController(int adminId) {
-		this.adminId = adminId;
+	public AdminController(String userName) {
+		this.userName = userName;
 	}
 
 	public void init() throws Exception {
@@ -151,7 +152,7 @@ public class AdminController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					new LineController().init();
+					new LineController(userName).init();
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}

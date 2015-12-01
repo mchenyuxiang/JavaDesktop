@@ -60,6 +60,18 @@ public class LineController {
 
 	// 垂直摆放
 	private Box vertical = Box.createVerticalBox();
+	
+	private int userId;
+	private String userName;
+	
+	public LineController() {
+
+	}
+
+	public LineController(String userName) {
+		this.userName = userName;
+	}
+
 
 	public void init() throws Exception {
 		// 数据库
