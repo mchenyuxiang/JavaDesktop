@@ -183,7 +183,7 @@ public class MessageController {
 										lineId = Integer.valueOf((String) table
 												.getModel().getValueAt(
 														rowIndex, 0));
-										messageInfo += "线路名称："
+										messageInfo += (String) table.getModel().getValueAt(rowIndex, 0) + "。线路名称："
 												+ (String) table
 														.getModel()
 														.getValueAt(rowIndex, 1)
