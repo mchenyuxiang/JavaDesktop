@@ -56,10 +56,10 @@ public class LoginController {
 		// 将角色单击按钮
 		buttonGroup.add(admin);
 		buttonGroup.add(sale);
-		buttonGroup.add(supplier);
+//		buttonGroup.add(supplier);
 		jPanel.add(admin);
 		jPanel.add(sale);
-		jPanel.add(supplier);
+//		jPanel.add(supplier);
 		Box vertical = Box.createVerticalBox();
 		vertical.add(userField);
 		vertical.add(passField);
@@ -97,22 +97,18 @@ public class LoginController {
 					
 					JOptionPane.showMessageDialog(jf, saveValue + "登录成功");
 					userName = login.getAdminName(adminId, 0, url, user, pass);
+//					System.out.println(userName);
 					try {
 						new TimeTaskController(userName).init();
 					} catch (ClassNotFoundException e2) {
-						// TODO Auto-generated catch block
 						e2.printStackTrace();
 					} catch (IOException e2) {
-						// TODO Auto-generated catch block
 						e2.printStackTrace();
 					}
 					// 关闭窗口
 					jf.dispose();
-//					jf1.pack();
-//					jf1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//					jf1.setVisible(true);
 					try {
-						new AdminController(userName).init();
+						new AdminController(userName,0).init();
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -125,14 +121,27 @@ public class LoginController {
 			} else if (saveValue.equals("销售")) {
 				// 登录成功则显示“登录成功”
 				int salerId = -1;
+				String userName = "";
 				salerId = login.salerValidate(userField.getText(), passField.getText(),url,user,pass);
 				if (salerId != -1) {
 					JOptionPane.showMessageDialog(jf, saveValue + "登录成功");
+					userName = login.getAdminName(salerId, 1, url, user, pass);
+					System.out.println(userName);
+					try {
+						new TimeTaskController(userName).init();
+					} catch (ClassNotFoundException e2) {
+						e2.printStackTrace();
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					}
 					// 关闭窗口
 					jf.dispose();
-					jf1.pack();
-					jf1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					jf1.setVisible(true);
+					try {
+						new AdminController(userName,1).init();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 				// 否则显示“登录失败”
 				else {

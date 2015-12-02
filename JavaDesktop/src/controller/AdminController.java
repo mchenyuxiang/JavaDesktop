@@ -38,6 +38,7 @@ public class AdminController {
 	private JButton departButton = new JButton("添加出发城市");
 	private JButton destinationButton = new JButton("添加目的地");
 	private JButton lineButton = new JButton("添加线路");
+	private JButton messageButton = new JButton("发送消息");
 
 	// 垂直摆放
 	private Box verticalLeft = Box.createVerticalBox();
@@ -48,6 +49,7 @@ public class AdminController {
 	private Box destinationVerticalRight = Box.createVerticalBox();
 	private int userId;
 	private String userName;
+	private int flag; // 0:管理员；1、销售
 
 	// 管理员添加数据dao方法
 	private AdminDao adminDao = new AdminDao();
@@ -56,8 +58,9 @@ public class AdminController {
 
 	}
 
-	public AdminController(String userName) {
+	public AdminController(String userName, int flag) {
 		this.userName = userName;
+		this.flag = flag;
 	}
 
 	public void init() throws Exception {
@@ -70,12 +73,15 @@ public class AdminController {
 		// 加载驱动
 		Class.forName(driver);
 
-		verticalLeft.add(saleButton);
+		if (flag != 1) {
+			verticalLeft.add(saleButton);
+		}
 		verticalLeft.add(supplierButton);
 		verticalLeft.add(shopButton);
 		verticalLeft.add(departButton);
 		verticalLeft.add(destinationButton);
 		verticalLeft.add(lineButton);
+		verticalLeft.add(messageButton);
 
 		JPanel jPanel1 = new JPanel();
 		jPanel1.add(new JLabel("用户名："));
@@ -148,7 +154,7 @@ public class AdminController {
 		departButton.addActionListener(new DepartInfo());
 		destinationButton.addActionListener(new DesinationInfo());
 		lineButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -158,6 +164,31 @@ public class AdminController {
 				}
 			}
 		});
+
+		messageButton.addActionListener(new MessageInfo(userName));
+
+	}
+
+	public class MessageInfo implements ActionListener {
+
+		String userName;
+
+		public MessageInfo() {
+
+		}
+
+		public MessageInfo(String userName) {
+			this.userName = userName;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			try {
+				new MessageController(userName).init();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
 
 	}
 

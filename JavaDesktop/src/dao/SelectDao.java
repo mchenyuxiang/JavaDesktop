@@ -18,19 +18,29 @@ public class SelectDao {
 	// private static String user;
 	// private static String pass;
 
-	// 查询销售名称
+	// 查询销售和管理员名称
 	public ArrayList<String> salerNameSelect(String url, String user,
 			String pass) {
 		ArrayList<String> salerName = new ArrayList<>();
 
 		try {
 			Connection conn = DriverManager.getConnection(url, user, pass);
+			
+			//查询销售名称
 			String query = "select salerName from tb_saler";
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 
 			while (rs.next()) {
 				String temp = rs.getString("salerName");
+				salerName.add(temp);
+			}
+			
+			//查询管理员名称
+			String queryAdminName = "select adminName from tb_admin";
+			rs = stmt.executeQuery(queryAdminName);
+			while (rs.next()) {
+				String temp = rs.getString("adminName");
 				salerName.add(temp);
 			}
 

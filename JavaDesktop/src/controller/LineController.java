@@ -212,6 +212,7 @@ public class LineController {
 						shopInfo.getText(), (String) flyComboBox.getSelectedItem(), url,
 						user, pass)) {
 					JOptionPane.showMessageDialog(jf, "添加线路成功");
+					jf.dispose();
 				} else {
 					JOptionPane.showMessageDialog(jf, "添加线路失败");
 				}

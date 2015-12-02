@@ -41,20 +41,35 @@ public class TimeTaskController {
 		// 加载驱动
 		Class.forName(driver);
 		
-		final ArrayList<String> messageInfo = new ArrayList<>();
+		ArrayList<String> messageInfo = new ArrayList<>();
 		
 		// run in a second
-		final long timeInterval = 1000;
+		final long timeInterval = 10000;
 		Runnable runnable = new Runnable() {
 			public void run() {
 				while (true) {
 					// ------- code for task to run
 //					System.out.println("Hello !!");
+					ArrayList<String> messageInfo = new ArrayList<>();
 					messageInfo.addAll(timeDao.noLookMessage(userName, url, user, pass));
+					
+					//更新消息ID
+					String messageId = "";
 					for(String message:messageInfo){
 //						 弹出对话框
-						 JOptionPane.showConfirmDialog(null, message, "新的线路消息",
+						 int replaced = JOptionPane.showConfirmDialog(null, message, "新的线路消息",
 						 JOptionPane.YES_NO_OPTION);
+						 String[] strTemp = message.split("。");
+						 messageId = strTemp[0];
+//						 System.out.println(messageId);
+//						 System.out.println(replaced);
+						 //选择后的动作. 0:YES;1:NO
+						 if(replaced == 0){
+							 timeDao.updateMessageStatus(userName, messageId, url, user, pass);
+							 JOptionPane.showMessageDialog(null, "接收线路成功");
+						 }
+						 
+						 
 					}
 					// ------- ends here
 					try {

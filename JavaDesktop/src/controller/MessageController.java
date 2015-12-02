@@ -101,14 +101,14 @@ public class MessageController {
 		initJPanel.add(noLineSend);
 		initJPanel.add(alreadySend);
 		initJPanel.add(lineSend);
-		initJPanel.add(otherSend);
+//		initJPanel.add(otherSend);
 
 		jf.add(initJPanel, BorderLayout.NORTH);
 		FrameUtil.initFrame(jf, 800, 800);
 		// jf.pack();
 
 		// 关闭当前窗口
-		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		jf.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		jf.setVisible(true);
 
 		noLineSend.addActionListener(new NoLineSend());
