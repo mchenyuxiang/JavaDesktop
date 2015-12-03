@@ -49,7 +49,6 @@ public class TimeTaskController {
 			public void run() {
 				while (true) {
 					// ------- code for task to run
-//					System.out.println("Hello !!");
 					ArrayList<String> messageInfo = new ArrayList<>();
 					messageInfo.addAll(timeDao.noLookMessage(userName, url, user, pass));
 					
@@ -61,8 +60,7 @@ public class TimeTaskController {
 						 JOptionPane.YES_NO_OPTION);
 						 String[] strTemp = message.split("。");
 						 messageId = strTemp[0];
-//						 System.out.println(messageId);
-//						 System.out.println(replaced);
+
 						 //选择后的动作. 0:YES;1:NO
 						 if(replaced == 0){
 							 timeDao.updateMessageStatus(userName, messageId, url, user, pass);
