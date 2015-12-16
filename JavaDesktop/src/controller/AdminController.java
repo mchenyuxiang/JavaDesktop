@@ -1,14 +1,18 @@
 package controller;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -16,7 +20,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import controller.MessageController.ButtonSendMessage;
 import dao.AdminDao;
+import dao.SelectDao;
 import util.FrameUtil;
 
 public class AdminController {
@@ -32,13 +38,21 @@ public class AdminController {
 	private JPanel jPanelLeft = new JPanel();
 	private JPanel jPanelRight = new JPanel();
 
-	private JButton saleButton = new JButton("添加销售");
-	private JButton supplierButton = new JButton("添加经销商");
-	private JButton shopButton = new JButton("添加店铺");
+	private JFrame salerJF = new JFrame("选择发送员工");
+
+	private JButton saleButton = new JButton("添加销售        ");
+	private JButton supplierButton = new JButton("添加经销商    ");
+	private JButton shopButton = new JButton("添加店铺        ");
 	private JButton departButton = new JButton("添加出发城市");
-	private JButton destinationButton = new JButton("添加目的地");
-	private JButton lineButton = new JButton("添加线路");
-	private JButton messageButton = new JButton("发送消息");
+	private JButton destinationButton = new JButton("添加目的地    ");
+	private JButton lineButton = new JButton("添加线路        ");
+	private JButton messageButton = new JButton("发送消息        ");
+	private JButton searchButton = new JButton("查       询         ");
+	
+	private JTextField supplierSale = new JTextField(10);
+
+	// 发送人员名单box列表
+	private List<JCheckBox> salerCheckBox = new ArrayList<JCheckBox>();
 
 	// 垂直摆放
 	private Box verticalLeft = Box.createVerticalBox();
@@ -53,6 +67,12 @@ public class AdminController {
 
 	// 管理员添加数据dao方法
 	private AdminDao adminDao = new AdminDao();
+
+	private SelectDao selectDao = new SelectDao();
+
+	private String saleName = "";
+	// 发送人员名单列表
+	private List<String> infos = new ArrayList<String>();
 
 	public AdminController() {
 
@@ -73,6 +93,14 @@ public class AdminController {
 		// 加载驱动
 		Class.forName(driver);
 
+		// saleButton.setPreferredSize(new Dimension(120,30));
+		// supplierButton.setPreferredSize(new Dimension(120,30));
+		// shopButton.setPreferredSize(new Dimension(120,30));
+		// departButton.setPreferredSize(new Dimension(120,30));
+		// destinationButton.setPreferredSize(new Dimension(120,30));
+		// lineButton.setPreferredSize(new Dimension(120,30));
+		// messageButton.setPreferredSize(new Dimension(120,30));
+
 		if (flag != 1) {
 			verticalLeft.add(saleButton);
 		}
@@ -82,7 +110,10 @@ public class AdminController {
 		verticalLeft.add(destinationButton);
 		verticalLeft.add(lineButton);
 		verticalLeft.add(messageButton);
-
+		if (flag != 1) {
+			verticalLeft.add(searchButton);
+		}
+		
 		JPanel jPanel1 = new JPanel();
 		jPanel1.add(new JLabel("用户名："));
 		final JTextField salerName = new JTextField(20);
@@ -325,6 +356,14 @@ public class AdminController {
 			final JTextField supplierPassword = new JTextField(20);
 			jPanel9.add(supplierPassword);
 
+			JPanel jPanel10 = new JPanel();
+			jPanel10.add(new JLabel("绑定销售："));
+//			final JTextField supplierSale = new JTextField(10);
+//			supplierSale.setText(saleName);
+			JButton jButtonSale = new JButton("增加销售");
+			jPanel10.add(supplierSale);
+			jPanel10.add(jButtonSale);
+
 			JPanel jPanel6 = new JPanel();
 			JButton jButton = new JButton("确认");
 			jPanel6.add(jButton);
@@ -337,8 +376,11 @@ public class AdminController {
 			supplierVerticalRight.add(jPanel7);
 			supplierVerticalRight.add(jPanel8);
 			supplierVerticalRight.add(jPanel9);
+			supplierVerticalRight.add(jPanel10);
 			supplierVerticalRight.add(jPanel6);
 			jf.add(supplierVerticalRight, BorderLayout.CENTER);
+
+			jButtonSale.addActionListener(new JButtonSale());
 
 			jButton.addActionListener(new ActionListener() {
 
@@ -349,13 +391,78 @@ public class AdminController {
 							supplierContact.getText(), supplierPhone.getText(),
 							supplierTel.getText(), supplierQQ.getText(),
 							supplierWinXin.getText(),
-							supplierPassword.getText(), url, user, pass)) {
+							supplierPassword.getText(), 
+							supplierSale.getText(),url, user, pass)) {
 						JOptionPane.showMessageDialog(jf, "添加经销商成功");
 					} else {
 						JOptionPane.showMessageDialog(jf, "添加经销商失败");
 					}
 				}
 			});
+
+		}
+
+	}
+
+	// 绑定销售
+	public class JButtonSale implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// 弹出对话框
+			// JOptionPane.showConfirmDialog(null, "choose one", "choose one",
+			// JOptionPane.YES_NO_CANCEL_OPTION);
+
+			JPanel contentPane = new JPanel(); // 创建内容面板
+
+			ArrayList<String> salerName = new ArrayList<>();
+
+			salerName.addAll(selectDao.salerNameSelect(url, user, pass));
+
+			for (String str : salerName) {
+				JCheckBox jc = new JCheckBox(str, false);
+				contentPane.add(jc);
+				salerCheckBox.add(jc);
+			}
+
+			JButton sendButton = new JButton("添加");
+			sendButton.addActionListener(new ButtonSendMessage());
+
+			salerJF.add(contentPane, BorderLayout.CENTER);
+			salerJF.add(sendButton, BorderLayout.SOUTH);
+			FrameUtil.initFrame(salerJF, 400, 600);
+			// jf.pack();
+
+			// 关闭当前窗口
+			salerJF.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+
+			salerJF.setVisible(true);
+
+		}
+
+	}
+
+	// 点击绑定销售
+	public class ButtonSendMessage implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			for (JCheckBox checkBox : salerCheckBox) {
+				if (checkBox.isSelected()) {
+					infos.add(checkBox.getText());
+				}
+			}
+			for(int i=0; i<infos.size(); i++){
+				if(i != infos.size()-1){
+					saleName += infos.get(i) + ","; 
+				}else{
+					saleName += infos.get(i);
+				}
+			}
+			
+			
+			supplierSale.setText(saleName);
+			salerJF.dispose();
 
 		}
 
@@ -517,12 +624,12 @@ public class AdminController {
 
 	}
 
-	// public static void main(String[] args) {
-	// try {
-	// new AdminController().init();
-	// } catch (Exception e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// }
+	public static void main(String[] args) {
+		try {
+			new AdminController().init();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

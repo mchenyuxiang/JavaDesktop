@@ -150,7 +150,7 @@ public class MessageController {
 				columnNames.add("店铺名称");
 				columnNames.add("目的地");
 				columnNames.add("出发地");
-				columnNames.add("自费信息");
+				columnNames.add("备注");
 				columnNames.add("是否转机");
 
 				// 把ResultSet的所有记录添加到Vector里
@@ -195,7 +195,7 @@ public class MessageController {
 												+ (String) table
 														.getModel()
 														.getValueAt(rowIndex, 5)
-												+ "。自费信息："
+												+ "。备注信息："
 												+ (String) table
 														.getModel()
 														.getValueAt(rowIndex, 7)

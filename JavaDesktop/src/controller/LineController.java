@@ -168,7 +168,7 @@ public class LineController {
 		confPanel.add(confButton);
 
 		JPanel jPanel2 = new JPanel();
-		jPanel2.add(new JLabel("自费信息："));
+		jPanel2.add(new JLabel("备注："));
 		final JTextArea shopInfo = new JTextArea(10, 20);
 		jPanel2.add(shopInfo);
 

@@ -5,6 +5,8 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
+
 import dao.LoginDao;
 import ActionListener.RadioButtonListener;
 import util.FrameUtil;
@@ -23,7 +25,7 @@ public class LoginController {
 	// 登录界面的GUI组件
 	private JFrame jf = new JFrame("登录");
 	private JTextField userField = new JTextField(20);
-	private JTextField passField = new JTextField(20);
+	private JPasswordField passField = new JPasswordField(20);
 	private JButton loginButton = new JButton("登录");
 	// 定义一个单选按钮，初始处于选中状态
 	private JRadioButton admin = new JRadioButton("管理员");
@@ -68,7 +70,7 @@ public class LoginController {
 
 		jf.add(vertical);
 //		jf.pack();
-		 FrameUtil.initFrame(jf, 300, 150);
+		 FrameUtil.initFrame(jf, 300, 200);
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jf.setVisible(true);
 		
@@ -169,6 +171,17 @@ public class LoginController {
 	}
 
 	public static void main(String[] args) throws Exception {
+		try
+	    {
+	        BeautyEyeLNFHelper.launchBeautyEyeLNF();
+//	        System.out.println(BeautyEyeLNFHelper.isSurportedTranslucency());
+	        BeautyEyeLNFHelper.translucencyAtFrameInactive=false;
+	        UIManager.put("RootPane.setupButtonVisible", false);
+	    }
+	    catch(Exception e)
+	    {
+	        //TODO exception
+	    }
 		new LoginController().init();
 	}
 }

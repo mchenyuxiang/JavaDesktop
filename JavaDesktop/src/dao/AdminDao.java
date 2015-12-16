@@ -39,13 +39,13 @@ public class AdminDao {
 	// 添加经销商
 	public boolean insertSupplier(String supplierName, String supplierAddress,
 			String supplierContact, String supplierPhone, String supplierTel,
-			String supplierQQ, String supplierWinXin, String supplierPassword,
+			String supplierQQ, String supplierWinXin, String supplierPassword,String supplierSale,
 			String url, String user, String pass) {
 		try {
 			Connection conn = DriverManager.getConnection(url, user, pass);
 			String query = "insert into tb_supplier (supplierName,supplierAddress,supplierContact,supplierPhone"
-					+ ",supplierTel,supplierQQ,supplierWinXin,supplierPassword) "
-					+ " values (?,?,?,?,?,?,?,?)";
+					+ ",supplierTel,supplierQQ,supplierWinXin,supplierPassword,supplierSaler) "
+					+ " values (?,?,?,?,?,?,?,?,?)";
 			PreparedStatement pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, supplierName);
 			pstmt.setString(2, supplierAddress);
@@ -55,6 +55,7 @@ public class AdminDao {
 			pstmt.setString(6, supplierQQ);
 			pstmt.setString(7, supplierWinXin);
 			pstmt.setString(8, supplierPassword);
+			pstmt.setString(9, supplierSale);
 
 			if (pstmt.executeUpdate() > 0) {
 				conn.close();
