@@ -53,7 +53,7 @@ public class SearchController {
 		pass = connProp.getProperty("pass");
 		// 加载驱动
 		Class.forName(driver);
-
+		JPanel initJPanel = new JPanel();
 		initJPanel.add(new JLabel("线路名称："));
 		final JTextField lineNameField = new JTextField(15);
 		initJPanel.add(lineNameField);
@@ -88,121 +88,90 @@ public class SearchController {
 		jf.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		jf.setVisible(true);
 
-		System.out.println(lineNameField.getText());
-		searchButton.addActionListener(new SearchLine(lineNameField.getText(),
-				salerNameField.getText(), supplierNameField.getText(),
-				shopNameField.getText(), destinationNameField.getText(), departNameField
-						.getText()));
+//		System.out.println(lineNameField.getText());
+		searchButton.addActionListener(new ActionListener() {
 
-	}
+			@Override
+			public void actionPerformed(ActionEvent e) {
+//				System.out.println(lineNameField.getText() + ";"
+//						+ salerNameField.getText() + ";" + supplierNameField.getText()
+//						+ ";" + shopNameField.getText() + ";" + destinationNameField.getText()
+//						+ ";" + departNameField.getText());
 
-	// 查看还未发布公告线路
-	public class SearchLine implements ActionListener {
-		String lineName;
-		String salerName;
-		String supplierName;
-		String shopName;
-		String destinationName;
-		String departName;
-
-		public SearchLine() {
-
-		}
-
-		public SearchLine(String lineName, String salerName,
-				String supplierName, String shopName, String destinationName,
-				String departName) {
-			this.lineName = lineName;
-			this.salerName = salerName;
-			this.supplierName = supplierName;
-			this.shopName = shopName;
-			this.destinationName = destinationName;
-			this.departName = departName;
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			System.out
-					.println(lineName + ";" + salerName + ";" + supplierName
-							+ ";" + shopName + ";" + destinationName + ";"
-							+ departName);
-
-			// 删除原来的JTable(JTable使用scrollPane来包装)
-			if (scrollPane != null) {
-				jf.remove(scrollPane);
-			}
-			try {
-				Connection conn = DriverManager.getConnection(url, user, pass);
-				Statement stmt = conn.createStatement();
-				
-				String query = "select lineId,lineName,salerName,supplierName,shopName,destinationName"
-						+ ",departName,expenseInfo,isThrough"
-						+ " from tb_line" + " where 1=1 ";
-				
-				if(!lineName.equals("")){
-					query += " and lineName like '%"+lineName+"%' "; 
+				// 删除原来的JTable(JTable使用scrollPane来包装)
+				if (scrollPane != null) {
+					jf.remove(scrollPane);
 				}
-				if(!salerName.equals("")){
-					query += " and salerName like '%"+salerName+"%' "; 
-				}
-				if(!supplierName.equals("")){
-					query += " and supplierName like '%"+supplierName+"%' "; 
-				}
-				if(!shopName.equals("")){
-					query += " and shopName like '%"+shopName+"%' "; 
-				}
-				if(!destinationName.equals("")){
-					query += " and destinationName like '%"+destinationName+"%' "; 
-				}
-				if(!departName.equals("")){
-					query += " and departName like '%"+departName+"%' "; 
-				}
-				
-				System.out.println(query);
-				
-				// 根据用户输入的SQL执行查询
-				ResultSet rs = stmt
-						.executeQuery(query);
-				// 取出ResultSet的MetaData
-				ResultSetMetaData rsmd = rs.getMetaData();
-				Vector<String> columnNames = new Vector<>();
-				Vector<Vector<String>> data = new Vector<>();
-				// 把ResultSet的所有列名添加到Vector里
-				// for (int i = 0; i < rsmd.getColumnCount(); i++) {
-				// columnNames.add(rsmd.getColumnName(i + 1));
-				// }
-				columnNames.add("线路ID");
-				columnNames.add("线路名称");
-				columnNames.add("销售名称");
-				columnNames.add("供应商名称");
-				columnNames.add("店铺名称");
-				columnNames.add("目的地");
-				columnNames.add("出发地");
-				columnNames.add("备注");
-				columnNames.add("是否转机");
+				try {
+					Connection conn = DriverManager.getConnection(url, user,
+							pass);
+					Statement stmt = conn.createStatement();
 
-				// 把ResultSet的所有记录添加到Vector里
-				while (rs.next()) {
-					Vector<String> v = new Vector<>();
-					for (int i = 0; i < rsmd.getColumnCount(); i++) {
-						v.add(rs.getString(i + 1));
+					String query = "select lineId,lineName,salerName,supplierName,shopName,destinationName"
+							+ ",departName,expenseInfo,isThrough"
+							+ " from tb_line" + " where 1=1 ";
+
+					if (!lineNameField.getText().equals("")) {
+						query += " and lineName like '%" + lineNameField.getText() + "%' ";
 					}
-					data.add(v);
+					if (!salerNameField.getText().equals("")) {
+						query += " and salerName like '%" + salerNameField.getText() + "%' ";
+					}
+					if (!supplierNameField.getText().equals("")) {
+						query += " and supplierName like '%" + supplierNameField.getText()
+								+ "%' ";
+					}
+					if (!shopNameField.getText().equals("")) {
+						query += " and shopName like '%" + shopNameField.getText() + "%' ";
+					}
+					if (!destinationNameField.getText().equals("")) {
+						query += " and destinationName like '%"
+								+ destinationNameField.getText() + "%' ";
+					}
+					if (!departNameField.getText().equals("")) {
+						query += " and departName like '%" + departNameField.getText() + "%' ";
+					}
+
+//					System.out.println(query);
+
+					// 根据用户输入的SQL执行查询
+					ResultSet rs = stmt.executeQuery(query);
+					// 取出ResultSet的MetaData
+					ResultSetMetaData rsmd = rs.getMetaData();
+					Vector<String> columnNames = new Vector<>();
+					Vector<Vector<String>> data = new Vector<>();
+					columnNames.add("线路ID");
+					columnNames.add("线路名称");
+					columnNames.add("销售名称");
+					columnNames.add("供应商名称");
+					columnNames.add("店铺名称");
+					columnNames.add("目的地");
+					columnNames.add("出发地");
+					columnNames.add("备注");
+					columnNames.add("是否转机");
+
+					// 把ResultSet的所有记录添加到Vector里
+					while (rs.next()) {
+						Vector<String> v = new Vector<>();
+						for (int i = 0; i < rsmd.getColumnCount(); i++) {
+							v.add(rs.getString(i + 1));
+						}
+						data.add(v);
+					}
+					// 创建新的JTable
+					final JTable table = new JTable(data, columnNames);
+					scrollPane = new JScrollPane(table);
+					// 添加新的Table
+					jf.add(scrollPane);
+					// 更新主窗口
+					jf.validate();
+
+				} catch (Exception e1) {
+					e1.printStackTrace();
 				}
-				// 创建新的JTable
-				final JTable table = new JTable(data, columnNames);
-				scrollPane = new JScrollPane(table);
-				// 添加新的Table
-				jf.add(scrollPane);
-				// 更新主窗口
-				jf.validate();
 
-			} catch (Exception e1) {
-				e1.printStackTrace();
 			}
-
-		}
+		});
 
 	}
 
