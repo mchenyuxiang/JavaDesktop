@@ -23,6 +23,8 @@ public class LoginController {
 	private String user;
 	private String pass;
 	// 登录界面的GUI组件
+	private JLabel jLabelUserName = new JLabel("用户名:");  
+	private JLabel jLabelPWD = new JLabel("密码:");  
 	private JFrame jf = new JFrame("登录");
 	private JTextField userField = new JTextField(20);
 	private JPasswordField passField = new JPasswordField(20);
@@ -42,6 +44,8 @@ public class LoginController {
 	private IsLoginIn isLoginIn = new IsLoginIn();
 
 	private JPanel jPanel = new JPanel();
+	private JPanel jPanelUserName = new JPanel();
+	private JPanel jPanelPWD = new JPanel();
 	
 	private LoginDao login = new LoginDao();
 
@@ -61,16 +65,28 @@ public class LoginController {
 //		buttonGroup.add(supplier);
 		jPanel.add(admin);
 		jPanel.add(sale);
+//		jPanelUserName.setLayout(new FlowLayout(10));
+		jPanelUserName.add(jLabelUserName);
+		jPanelUserName.add(userField);
+		
+//		jPanelPWD.setLayout(new FlowLayout(10));
+		jPanelPWD.add(jLabelPWD);
+		jPanelPWD.add(passField);
 //		jPanel.add(supplier);
-		Box vertical = Box.createVerticalBox();
-		vertical.add(userField);
-		vertical.add(passField);
-		vertical.add(jPanel);
-		vertical.add(loginButton);
+//		Box vertical = Box.createVerticalBox();
+//		vertical.add(userField);
+//		vertical.add(passField);
+//		vertical.add(jPanel);
+//		vertical.add(loginButton);
 
-		jf.add(vertical);
+//		jf.add(vertical);
 //		jf.pack();
-		 FrameUtil.initFrame(jf, 300, 200);
+		jf.setLayout(new GridLayout(4, 1));
+		jf.add(jPanelUserName);
+		jf.add(jPanelPWD);
+		jf.add(jPanel);
+		jf.add(loginButton);
+		 FrameUtil.initFrame(jf, 600, 400);
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jf.setVisible(true);
 		
