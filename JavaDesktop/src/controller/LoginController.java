@@ -24,7 +24,7 @@ public class LoginController {
 	private String pass;
 	// 登录界面的GUI组件
 	private JLabel jLabelUserName = new JLabel("用户名:");  
-	private JLabel jLabelPWD = new JLabel("密码:");  
+	private JLabel jLabelPWD = new JLabel("密  码:");  
 	private JFrame jf = new JFrame("登录");
 	private JTextField userField = new JTextField(20);
 	private JPasswordField passField = new JPasswordField(20);
@@ -66,10 +66,14 @@ public class LoginController {
 		jPanel.add(admin);
 		jPanel.add(sale);
 //		jPanelUserName.setLayout(new FlowLayout(10));
+		jLabelUserName.setBounds(260, 130, 70, 20);
+		userField.setBounds(100, 100, 150, 20);
 		jPanelUserName.add(jLabelUserName);
 		jPanelUserName.add(userField);
 		
+		jLabelPWD.setBounds(260, 130, 70, 20);
 //		jPanelPWD.setLayout(new FlowLayout(10));
+		passField.setBounds(100, 100, 150, 20);
 		jPanelPWD.add(jLabelPWD);
 		jPanelPWD.add(passField);
 //		jPanel.add(supplier);
@@ -81,6 +85,7 @@ public class LoginController {
 
 //		jf.add(vertical);
 //		jf.pack();
+		loginButton.setBounds(280, 200, 65, 20);
 		jf.setLayout(new GridLayout(4, 1));
 		jf.add(jPanelUserName);
 		jf.add(jPanelPWD);

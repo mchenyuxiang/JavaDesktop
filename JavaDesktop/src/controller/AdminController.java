@@ -45,9 +45,9 @@ public class AdminController {
 	private JButton shopButton = new JButton("添加店铺        ");
 	private JButton departButton = new JButton("添加出发城市");
 	private JButton destinationButton = new JButton("添加目的地    ");
-	private JButton lineButton = new JButton("添加线路        ");
-	private JButton messageButton = new JButton("发送消息        ");
-	private JButton searchButton = new JButton("查       询         ");
+	private JButton lineButton = new JButton("添加线路  ");
+	private JButton messageButton = new JButton("发送消息  ");
+	private JButton searchButton = new JButton("查       询");
 	
 	private JTextField supplierSale = new JTextField(10);
 
@@ -61,6 +61,19 @@ public class AdminController {
 	private Box shopVerticalRight = Box.createVerticalBox();
 	private Box departVerticalRight = Box.createVerticalBox();
 	private Box destinationVerticalRight = Box.createVerticalBox();
+	
+	
+	
+	private JPanel saleJPanel = new JPanel();
+	private JPanel supplierJPanel = new JPanel();
+	private JPanel shopJPanel = new JPanel();
+	private JPanel departJPanel = new JPanel();
+	private JPanel destinationJPanel = new JPanel();
+	private JPanel lineJPanel = new JPanel();
+	private JPanel messageJPanel = new JPanel();
+	private JPanel searchJPanel = new JPanel();
+	
+	
 	private int userId;
 	private String userName;
 	private int flag; // 0:管理员；1、销售
@@ -93,26 +106,41 @@ public class AdminController {
 		// 加载驱动
 		Class.forName(driver);
 
-		// saleButton.setPreferredSize(new Dimension(120,30));
-		// supplierButton.setPreferredSize(new Dimension(120,30));
-		// shopButton.setPreferredSize(new Dimension(120,30));
-		// departButton.setPreferredSize(new Dimension(120,30));
-		// destinationButton.setPreferredSize(new Dimension(120,30));
-		// lineButton.setPreferredSize(new Dimension(120,30));
-		// messageButton.setPreferredSize(new Dimension(120,30));
 
-		if (flag != 1) {
-			verticalLeft.add(saleButton);
+//		if (flag != 1) {
+//			verticalLeft.add(saleButton);
+//		}
+//		verticalLeft.add(supplierButton);
+//		verticalLeft.add(shopButton);
+//		verticalLeft.add(departButton);
+//		verticalLeft.add(destinationButton);
+//		verticalLeft.add(lineButton);
+//		verticalLeft.add(messageButton);
+//		if (flag != 1) {
+//			verticalLeft.add(searchButton);
+//		}
+//		
+		if(flag != 1){
+			saleJPanel.add(saleButton);
 		}
-		verticalLeft.add(supplierButton);
-		verticalLeft.add(shopButton);
-		verticalLeft.add(departButton);
-		verticalLeft.add(destinationButton);
-		verticalLeft.add(lineButton);
-		verticalLeft.add(messageButton);
-		if (flag != 1) {
-			verticalLeft.add(searchButton);
+		supplierJPanel.add(supplierButton);
+		shopJPanel.add(shopButton);
+		departJPanel.add(departButton);
+		destinationJPanel.add(destinationButton);
+		lineJPanel.add(lineButton);
+		messageJPanel.add(messageButton);
+		if(flag!=1){
+			searchJPanel.add(searchButton);
 		}
+		
+		verticalLeft.add(saleJPanel);
+		verticalLeft.add(supplierJPanel);
+		verticalLeft.add(shopJPanel);
+		verticalLeft.add(departJPanel);
+		verticalLeft.add(destinationJPanel);
+		verticalLeft.add(lineJPanel);
+		verticalLeft.add(messageJPanel);
+		verticalLeft.add(searchJPanel);
 		
 		JPanel jPanel1 = new JPanel();
 		jPanel1.add(new JLabel("用户名："));
